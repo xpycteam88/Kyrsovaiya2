@@ -7,12 +7,12 @@ import org.springframework.stereotype.Repository;
 import java.util.*;
 
 @Repository("javaRepository")
-public class JavaQuestionRepository implements QuestionRepository{
+public class JavaQuestionRepository implements QuestionRepository {
 
     private final Set<Question> repository = new HashSet<>();
 
     @PostConstruct
-    private void init(){
+    private void init() {
         repository.add(new Question("Pro", "Sky"));
         repository.add(new Question("Sky", "Eng"));
         repository.add(new Question("Du", "Hast"));

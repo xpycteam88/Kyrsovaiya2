@@ -1,6 +1,7 @@
 package com.example.cw_javacore.service;
 
 import com.example.cw_javacore.exceptions.MethodNotAllowedException;
+import com.example.cw_javacore.exceptions.NotFoundOperationException;
 import com.example.cw_javacore.model.Question;
 import com.example.cw_javacore.repository.QuestionRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -13,7 +14,7 @@ import java.util.Random;
 public class MathQuestionService implements QuestionService {
 
     private final Random random = new Random();
-
+    private final String[] operators = {"+", "-", "*", "/"};
 
     @Override
     public Question add(String question, String answer) {
@@ -60,6 +61,8 @@ public class MathQuestionService implements QuestionService {
                 result = firstNum / secondNum;
                 answer = result + "";
                 return new Question(textQuestion, answer);
+            default:
+                throw new NotFoundOperationException();
 
         }
         /*
@@ -75,7 +78,7 @@ public class MathQuestionService implements QuestionService {
         throw new NotFoundQuestionsException();
 
          */
-        return null;
+        //return null;
     }
 
     private int generateNum() {
@@ -88,7 +91,6 @@ public class MathQuestionService implements QuestionService {
     }
 
     private String generateOperator() {
-        String[] operators = {"+", "-", "*", "/"};
         int i = random.nextInt(4);
         return operators[i];
     }

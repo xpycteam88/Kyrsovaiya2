@@ -12,6 +12,7 @@ public class ExaminerServiceImpl implements ExaminerService {
 
     private final QuestionService javaService;
     private final QuestionService mathService;
+
     private final Random random = new Random();
 
     public ExaminerServiceImpl(@Qualifier("java") QuestionService javaService, @Qualifier("math") QuestionService mathService) {
@@ -20,20 +21,33 @@ public class ExaminerServiceImpl implements ExaminerService {
     }
 
     @Override
-    public Collection<Question> getQuestions (int amount){
+    public Collection<Question> getQuestions(int amount) {
+        /*
         var allQuestions = new ArrayList<>(javaService.getAll());
-        //allQuestions.addAll(mathService.getAll());
+
+        allQuestions.addAll(mathService.getAll());
         if (amount > allQuestions.size()) {
             throw new NotEnoughQuestionsException();
         }
+
         if (amount == allQuestions.size()){
             return allQuestions;
         }
-
+        */
         Set<Question> questions = new HashSet<>();
-        while (questions.size()<amount) {
-            var randomQuestion = random.nextBoolean() ? javaService.getRandomQuestion() : mathService.getRandomQuestion();
-            questions.add(randomQuestion);
+        Question randomQuestion;
+        if (javaService.getAll().isEmpty()) {
+            while (questions.size() < amount) {
+                randomQuestion = mathService.getRandomQuestion();
+                questions.add(randomQuestion);
+            }
+        } else {
+            while (questions.size() < amount) {
+
+                randomQuestion = random.nextBoolean() ? javaService.getRandomQuestion() : mathService.getRandomQuestion();
+                questions.add(randomQuestion);
+            }
+
         }
         return questions;
     }
